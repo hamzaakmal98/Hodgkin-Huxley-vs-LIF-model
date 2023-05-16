@@ -475,6 +475,8 @@ In the LIF model, the parameters m, n, and h are not typically used since the mo
 %% "and references therein" or move them in the text. In general, please leave only references in the bibliography and move all
 %% accessory text in footnotes.
 %% (iii) Also, please have only one work for each \bibitem.
+\subsection{References}
+\\
 
 \begin{thebibliography}{99}
 
