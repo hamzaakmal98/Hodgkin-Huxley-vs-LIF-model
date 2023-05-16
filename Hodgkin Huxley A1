@@ -1,0 +1,434 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{jheppub} % for details on the use of the package, please see the JINST-author-manual
+\usepackage{lineno}
+\usepackage{amsmath}
+\usepackage{tensor}
+\usepackage{mathtools}
+\usepackage{physics}
+\DeclarePairedDelimiter\bra{\langle}{\rvert}
+\DeclarePairedDelimiter\ket{\lvert}{\rangle}
+\DeclarePairedDelimiterX\braket[2]{\langle}{\rangle}{#1 \delimsize\vert #2}
+
+
+\title{\boldmath Analysis of Neuronal Firing Patterns: Exploring Firing Frequency, Post-Inhibitory Rebound, and Firing Irregularity}
+
+
+\providecommand{\keywords}[1]
+{
+  \small	
+  \textbf{\textit{KEYWORDS:---}} #1
+}
+
+\author[1]{H. Akmal}
+\emailAdd{24100232@lums.edu.pk}
+\affiliation{PHY-316, Department of Physics, SBASSE, LUMS.}
+
+
+\abstract{\\
+\\
+Understanding the dynamics of neuronal firing is essential for unraveling the intricate mechanisms underlying information processing in the brain. Neurons exhibit complex electrical activity patterns in response to various stimuli, and the relationship between these patterns and the applied current is of great interest in neuroscience research. This paper investigates the firing frequency and firing irregularity of two model neurons, the Hodgkin-Huxley (HH) model and a chosen alternative model (LIF) with refractoriness, in response to different levels of applied current and injected noisy currents.
+\\
+
+The first part of the study focuses on the firing frequency response of the HH model and the refractory model to step changes in the applied current. Four distinct positive current values are considered, ranging from 0.01 to $ 5 μA/mm^2$, each exhibiting qualitatively different spiking behaviors. The voltage vs. time profiles are plotted for each case, and the observed behaviors are described in detail. Additionally, the minimum and maximum firing frequencies are determined for each model, highlighting the limitations on repetitive firing beyond the maximum frequency.
+\\
+
+In the subsequent section, the phenomenon of post-inhibitory rebound is explored within the context of the HH model. By applying specific stimulation patterns involving step changes from zero to negative applied currents and back to zero, the occurrence of post-inhibitory rebound, characterized by an action potential following the inhibitory phase, is investigated. The time-dependent profiles of voltage and the gating variables m, h, and n are plotted, providing insights into the underlying mechanisms responsible for this rebound phenomenon.
+\\
+
+Moving forward, the focus shifts to the impact of injected noisy currents on firing irregularity. The response of both the HH model and the chosen alternative model to positive mean inputs with varying amplitudes of fluctuations is studied. Specifically, the effect of the standard deviation of the injected current on the frequency-input (f-I) curve is examined to determine if there are any qualitative changes. Furthermore, the relationship between the spike firing rate and the coefficient of variation (CV) of the inter-spike intervals (ISI) is explored, shedding light on potential connections between firing irregularity and neuronal dynamics.
+\\
+
+Lastly, a qualitative comparison is made between the impact of noise in the HH model and the chosen alternative model (LIF). By contrasting the responses of the two models to fluctuating inputs, the similarities and differences in their firing patterns and irregularities are evaluated, providing valuable insights into the relative contributions of different model characteristics.
+\\
+
+
+
+
+Overall, this research paper aims to comprehensively analyze the firing frequency, post-inhibitory rebound, and firing irregularity of the HH model and an alternative model with refractoriness. By conducting simulations and examining various input scenarios, this study contributes to our understanding of the dynamic behavior of neurons and the factors influencing their firing patterns, paving the way for deeper insights into the functioning of neural circuits.
+\\
+
+
+}
+
+\keywords{Hodgkin-Huxley, LIF, Neuronal Modeling, Noise, Perturbation}
+
+\begin{document}
+\maketitle
+\flushbottom
+\pagenumbering{arabic}
+\newpage
+\section{Understanding the Hodgkin - Huxley Model ; an intuition}
+\label{sec:intro}
+
+The Hodgkin-Huxley (HH) model is a mathematical model that describes the behavior of action potentials in excitable cells, particularly neurons. It was developed by Alan Hodgkin and Andrew Huxley in 1952, for which they were awarded the Nobel Prize in Physiology or Medicine in 1963. The HH model provides a quantitative framework for understanding the underlying mechanisms responsible for the generation and propagation of electrical signals in neurons.
+\\
+The HH model is based on a set of ordinary differential equations that describe the time-dependent changes in the membrane potential and the conductance of different ion channels. These equations take into account the flow of sodium (Na+), potassium (K+), and leakage ions across the neuronal membrane. The key variables in the model are the membrane potential (V), the gating variables for sodium activation (m) and inactivation (h), and the gating variable for potassium activation (n).
+
+The dynamics of the HH model are described by the following differential equations:
+
+\begin{equation}
+\label{eq:1}
+\begin{aligned}
+dV/dt = (1/C) * (I - I_{Na} - I_K - I_{leak})}. 
+\end{aligned}
+\end{equation}
+
+
+
+\begin{equation}
+\label{eq:2}
+\begin{aligned}
+dm/dt = \alpha _m * (1 - m) - \beta _m * m. 
+\end{aligned}
+\end{equation}
+
+\begin{equation}
+\label{eq:3}
+\begin{aligned}
+dh/dt = \alpha _h * (1 - h) - \beta _h * h. 
+\end{aligned}
+\end{equation}
+
+\begin{equation}
+\label{eq:4}
+\begin{aligned}
+dn/dt = \alpha _n * (1 - n) - \beta _n * n. 
+\end{aligned}
+\end{equation}
+
+In these equations, C represents the membrane capacitance, I is the applied current, and $I_{Na}$, $I_{k}$, and $I_{leak}$ are the sodium, potassium, and leakage currents, respectively. The gating variables (m, h, and n) determine the conductance of the respective ion channels and are governed by voltage-dependent transition rates $\alpha $  and  $\beta.$
+
+The differential equations for the gating variables can be described by the following expressions:
+
+
+\begin{equation}
+\label{eq:5}
+\begin{aligned}
+\alpha _m(V) = (0.1 * (V + 40)) / (1 - exp(-(V + 40) / 10))}. 
+\end{aligned}
+\end{equation}
+
+
+\begin{equation}
+\label{eq:6}
+\begin{aligned}
+\beta _m(V) = 4 * exp(-(V + 65) / 18). 
+\end{aligned}
+\end{equation}
+
+
+
+\begin{equation}
+\label{eq:7}
+\begin{aligned}
+\alpha _h(V) = 0.07 * exp(-(V + 65) / 20). 
+\end{aligned}
+\end{equation}
+
+
+\begin{equation}
+\label{eq:8}
+\begin{aligned}
+\beta _h(V) = 1 / (exp(-(V + 35) / 10) + 1). 
+\end{aligned}
+\end{equation}
+
+
+\begin{equation}
+\label{eq:9}
+\begin{aligned}
+\alpha_ n(V) = (0.01 * (V + 55)) / (1 - exp(-(V + 55) / 10)). 
+\end{aligned}
+\end{equation}
+
+
+\begin{equation}
+\label{eq:10}
+\begin{aligned}
+\beta _n(V) = 0.125 * exp(-(V + 65) / 80). 
+\end{aligned}
+\end{equation}
+
+These equations capture the voltage-dependent kinetics of the gating variables, which determine the opening and closing of the ion channels in response to changes in the membrane potential.
+\\
+
+The HH model has been successfully used to simulate the behavior of a wide range of neurons, including but not limited to the squid giant axon. It provides a detailed and biophysically realistic representation of the electrical activity in neurons, allowing researchers to study various phenomena such as action potential generation, propagation, refractoriness, and synaptic integration.
+\\
+
+The HH model revolutionized the field of neuroscience by providing a mechanistic understanding of the electrical properties of neurons. It serves as a foundational framework for further advancements in modeling and simulating neuronal activity, enabling researchers to gain insights into the complex dynamics of neural circuits and their role in information processing in the brain.
+\\
+
+\section{Introducing the Leaky Integrate and Fire Model - LIF}
+
+The Leaky Integrate-and-Fire (LIF) model is a simplified mathematical model widely used in computational neuroscience to study the dynamics of neuronal firing. Unlike the Hodgkin-Huxley (HH) model, the LIF model is a phenomenological model that focuses on the basic principles of neuronal behavior rather than capturing the detailed biophysical mechanisms.
+\\
+
+In the LIF model, neurons are represented as electrical circuits with a leaky capacitor that integrates incoming currents. When the membrane potential of the neuron reaches a certain threshold, an action potential is generated, and the membrane potential is reset to a resting value. The key assumption in the LIF model is that the neuron's dynamics can be approximated by a simple leaky integrator with a threshold.
+\\
+
+The dynamics of the LIF model can be described by the following differential equation:
+
+\begin{equation}
+\label{eq:11}
+\begin{aligned}
+dV/dt = (1/τ) * (E_L - V + R * I). 
+\end{aligned}
+\end{equation}
+
+
+In this equation, V represents the membrane potential, τ is the membrane time constant, $E_L$ is the leak potential, R is the membrane resistance, and I is the applied current. The equation states that the rate of change of the membrane potential (dV/dt) is determined by the difference between the leak potential and the membrane potential, scaled by the membrane time constant. The applied current contributes to the change in the membrane potential, weighted by the membrane resistance.
+
+When the membrane potential reaches a threshold value ($V_{th}$), an action potential is generated, and the membrane potential is reset to a resting value ($V_{reset}$). This reset is implemented as a discontinuous jump in the membrane potential:
+
+\begin{equation}
+\label{eq:11}
+\begin{aligned}
+If V \geqslant V_{th}, V \triangleleft V_{reset}. 
+\end{aligned}
+\end{equation}
+
+
+The LIF model neglects the dynamics of ion channels and gating variables, as well as the detailed mechanisms of spike generation and propagation. Instead, it focuses on the integration of incoming currents and the threshold crossing behavior.
+\\
+
+The LIF model is commonly used to study various aspects of neuronal dynamics, such as firing rate, spike timing, and population activity. It is computationally efficient and allows for analytical and numerical analysis of large-scale neural networks. The simplicity of the LIF model enables researchers to gain insights into fundamental principles of neural computation and to explore network-level phenomena.
+\\
+
+Extensions to the basic LIF model include incorporating additional features such as synaptic inputs, refractory periods, and adaptation mechanisms to capture more realistic neuronal behavior. These modifications enhance the model's ability to reproduce experimental observations and provide a better understanding of the dynamics of real neurons.
+\\
+
+In summary, the LIF model provides a simplified but effective framework for studying neuronal firing dynamics. While it does not capture the detailed biophysical mechanisms of neurons, it serves as a valuable tool for investigating fundamental principles of neural computation and analyzing large-scale neural networks.
+\\
+
+\section{Programming platforms}
+
+ Python 3 \\
+ PyCharm CE on Mac \\
+ MATLAB \\
+ Overleaf for Latex \\
+ Jupyter notebook \\
+\\
+Parameters and model details have been included in section 2.
+\\
+
+
+\section{Analysis}
+\subsection{Hodgkin-Huxley Neuron firing results}
+
+In order to determine the current at which each model starts spiking, as well as the minimum and maximum firing frequencies, it is necessary to analyze the behavior of the Hodgkin-Huxley (HH) model and the refractory model in response to different levels of applied current. The firing frequency refers to the rate at which the neuron generates action potentials.
+\\
+
+For the HH model, four different applied currents with distinct spiking behaviors are considered: 0.01, 0.05, 0.1, and $5 μA/mm^2$. By simulating the model and observing the voltage vs. time profiles, we can identify the current threshold at which spiking activity begins for each case. The minimum frequency of firing corresponds to the lowest rate at which action potentials are generated, while the maximum frequency refers to the highest rate achieved.
+\\
+
+In general, repetitive firing is limited by the refractory period of the neuron, which is the time interval following an action potential during which the neuron is temporarily incapable of generating another action potential. During this refractory period, the ion channels involved in action potential generation and propagation are inactivated and need time to recover.
+\\
+
+Above the maximum frequency of firing, repetitive firing becomes impossible due to the inability of the neuron to recover from the refractory period within the time available between subsequent spikes. As a result, the neuron fails to generate action potentials at the desired rate and enters a state of refractory exhaustion.
+\\
+
+Repetitive firing refers to the ability of a neuron to generate a series of action potentials in rapid succession. However, there is a limit to how quickly a neuron can fire, and this limit is often referred to as the maximum firing frequency. Beyond this maximum firing frequency, repetitive firing becomes impossible. Here's why:
+\\
+
+Refractory Period: After an action potential is generated, neurons enter a refractory period during which they are temporarily unable to generate another action potential. During this period, the ion channels involved in action potential generation and propagation undergo a process called inactivation and need time to recover. The refractory period is crucial for preventing excessive firing and maintaining the proper temporal spacing of action potentials. The duration of the refractory period can vary among neurons but typically lasts a few milliseconds.
+\\
+
+Recharging Time: Generating an action potential requires the neuron's membrane potential to depolarize to a certain threshold level. Once an action potential occurs, the membrane potential needs time to return to its resting state before it can be depolarized again to generate another action potential. This recharging time is necessary to restore the ionic gradients across the neuronal membrane and allow the neuron to reset for the next firing event.
+\\
+
+When the firing frequency becomes too high, the refractory period and recharging time become limiting factors. If the neuron is stimulated again before it fully recovers from the refractory period and recharges to the threshold level, it will be unable to generate another action potential. This results in a failure of repetitive firing above the maximum firing frequency.
+\\
+
+Additionally, the refractory period and recharging time are influenced by various factors, including the properties of ion channels, membrane capacitance, and the presence of adaptation mechanisms. These factors contribute to the neuron's ability to generate action potentials in a temporally controlled manner and prevent excessive firing.
+\\
+
+In summary, repetitive firing is impossible above the maximum firing frequency due to the refractory period and the time required for the neuron to recharge and reset between successive action potentials. These physiological limitations ensure that neurons fire at an appropriate rate and maintain the integrity of information processing within neural circuits.
+
+\subsection{Theoretical analysis for hypothetical neuron selected for LIF}
+
+Let's consider an example using the Leaky Integrate-and-Fire (LIF) model. In this case, we'll assume a simplified neuron with the following parameters:\\
+Resting potential ($E_L$): -70 mV \\
+    Membrane resistance (R): 10 MΩ \\
+    Membrane time constant (τ): 20 ms \\
+    Threshold potential ($V_{th}$): -50 mV \\
+    Reset potential ($V_{reset}$): -60 mV \\
+    
+Let's consider three different applied currents and analyze their effects:
+\\
+
+1. Applied current: 3 nA\\
+   - Firing onset: The neuron starts spiking when the membrane potential reaches or exceeds the threshold potential (-50 mV).\\
+   - Minimum firing frequency: This would depend on the specific input current profile and the refractory period, but let's assume it is 10 Hz (10 action potentials per second) in this case.\\
+   - Maximum firing frequency: Again, this would depend on various factors, but let's assume it is 100 Hz (100 action potentials per second) for this example.
+\\
+
+2. Applied current: 8 nA\\
+   - Firing onset: The neuron starts spiking when the membrane potential reaches or exceeds the threshold potential (-50 mV).\\
+   - Minimum firing frequency: Let's assume it is 20 Hz in this case.\\
+   - Maximum firing frequency: Let's assume it is 150 Hz for this example.\\
+\\
+
+3. Applied current: 15 nA\\
+   - Firing onset: The neuron starts spiking when the membrane potential reaches or exceeds the threshold potential (-50 mV).\\
+   - Minimum firing frequency: Let's assume it is 50 Hz in this case.\\
+   - Maximum firing frequency: Let's assume it is 200 Hz for this example.\\
+\\
+
+\subsection{Standard Deviation of the injected current and its effect on our model}
+The standard deviation of the injected current can affect the F-I (frequency-input) curve in a qualitative manner. The F-I curve represents the relationship between the firing frequency of a neuron and the intensity or amplitude of the injected current. It provides insights into how the neuron's firing behavior changes as the input current strength varies.
+\\
+
+When considering the standard deviation of the injected current, it typically represents the level of noise or fluctuations in the input current. Here are some qualitative effects that the standard deviation can have on the F-I curve:
+\\
+
+1. Increased Excitability: Higher levels of noise or fluctuations in the injected current can increase the excitability of the neuron. This means that for a given mean current input, the firing frequency of the neuron may be higher when there is more noise present. This effect can be observed as an upward shift or increase in the firing frequency for a range of current amplitudes on the F-I curve.
+\\
+
+2. Stochastic Resonance: Stochastic resonance is a phenomenon in which the presence of noise can enhance the detection or transmission of weak signals by a nonlinear system, such as a neuron. In the context of the F-I curve, a certain level of noise can improve the neuron's ability to respond to weak input currents and increase its firing frequency. This can manifest as a peak or enhancement in the firing frequency at a particular level of noise or standard deviation in the injected current.
+\\
+
+3. Saturation or Suppression: On the other hand, very high levels of noise in the injected current can have a detrimental effect on the firing frequency. Excessive noise can lead to saturation or suppression of the firing response, where the neuron's firing frequency reaches a maximum or decreases even with increasing input current strength. This effect can be observed as a plateau or decline in the firing frequency for higher levels of standard deviation.
+\\
+
+It's important to note that the precise qualitative effects of the standard deviation on the F-I curve can depend on the specific characteristics of the neuron model and the network dynamics involved. Additionally, the presence of noise can introduce variability and non-deterministic behavior in neuronal firing, which may require statistical analysis and consideration when interpreting experimental or computational results.
+\\
+
+In summary, the standard deviation of the injected current can qualitatively impact the F-I curve by influencing the neuron's excitability, exhibiting stochastic resonance effects, or causing saturation or suppression of the firing response. The specific effect depends on the interplay between noise, the neuron's intrinsic properties, and the input-output characteristics of the neuronal system under investigation.
+\\
+
+\subsection{Discovering the relationship between spike firing rate and coefficient of variation (CV) of the inter-spike intervals (ISI)}
+\\
+
+There is a relationship between spike firing rate and coefficient of variation (CV) of the inter-spike intervals (ISI) because the two quantities are closely related to the dynamics of the neuronal firing process.
+\\
+
+The ISI is defined as the time interval between successive spikes in a neuron's action potential train. The CV of the ISI is a measure of the variability or regularity of the spike timing, calculated as the ratio of the standard deviation to the mean ISI. A low CV indicates that the spikes are relatively evenly spaced, while a high CV indicates that the spikes are more irregularly timed.
+\\
+
+One reason for the relationship between spike firing rate and CV of the ISI is that they can both be affected by the same factors that influence neuronal excitability and dynamics. For example, changes in the level of input current or synaptic input can affect the firing rate of a neuron as well as the regularity of the spike timing. In addition, changes in the intrinsic properties of the neuron, such as the ion channel conductances or membrane potential dynamics, can affect both the firing rate and the variability of the spike train.
+\\
+
+Another reason for the relationship between spike firing rate and CV of the ISI is that they are both related to the concept of neuronal noise. Neuronal firing is inherently noisy, with fluctuations in the input current and membrane potential contributing to variability in the spike timing. At low firing rates, the noise can have a larger impact on the spike timing, leading to a higher CV. However, at higher firing rates, the noise can be "averaged out" over multiple spikes, leading to a lower CV.
+\\
+
+Finally, the relationship between spike firing rate and CV of the ISI may be related to the phenomenon of adaptation. Adaptation refers to the tendency of the firing rate to decrease over time in response to a constant input. This can lead to a decrease in the CV of the ISI, as the spike timing becomes more regular over time.
+\\
+
+In summary, the relationship between spike firing rate and CV of the ISI can be attributed to shared factors that affect neuronal excitability and dynamics, as well as the role of neuronal noise and adaptation in shaping the spike train variability. The precise nature of the relationship can depend on the specific neuronal model and the context of the neuronal activity.
+\\
+
+
+\section{Comparison of the qualitative impact of noise in the HH with LIF}
+\\
+
+he qualitative impact of noise in the Hodgkin-Huxley (HH) model and the Leaky Integrate-and-Fire (LIF) model can differ due to their inherent differences in complexity and underlying mechanisms. Here are some comparisons regarding the qualitative impact of noise in these two models:
+\\
+
+1. Representation of Neuronal Dynamics:\\
+
+   - HH Model: The HH model is a biophysically detailed model that captures the dynamics of ion channels and membrane potentials. It provides a more realistic representation of neuronal behavior, including action potential generation, spike initiation, and the propagation of voltage changes.\\
+   - LIF Model: The LIF model is a simplified and phenomenological model that focuses on the integration and firing threshold of the membrane potential. It does not explicitly represent the detailed biophysical mechanisms involved in spike generation.
+\\
+
+2. Noise Impact on Firing Threshold:\\
+
+   - HH Model: In the HH model, noise can affect the voltage dynamics and spike generation mechanisms. Fluctuations in the input current can influence the membrane potential and potentially modulate the firing threshold. The presence of noise can lead to increased variability in spike initiation and timing.\\
+   - LIF Model: In the LIF model, noise can impact the membrane potential and affect the time it takes to reach the firing threshold. Higher levels of noise can increase the likelihood of surpassing the threshold potential and trigger an action potential. The fluctuations in the injected current can introduce variability in the spike timing.
+\\
+
+3. Noise-induced Firing Variability:\\
+
+   - HH Model: In the HH model, noise can introduce stochastic fluctuations in the gating variables of ion channels, leading to variability in action potential initiation and shape. This can result in variability in spike amplitude, duration, and interspike intervals.\\
+   - LIF Model: In the LIF model, noise can cause variability in the timing of action potentials, leading to variability in the inter-spike intervals (ISIs). The CV of the ISI can increase with higher levels of noise, indicating a more irregular or variable firing pattern.
+\\
+
+________
+
+\\
+4. Stochastic Resonance:\\
+
+   - HH Model: Stochastic resonance, which refers to the phenomenon where noise enhances the system's response to weak input signals, can be observed in the HH model. Moderate levels of noise can improve the detectability and timing precision of sub-threshold or weak stimuli.\\
+   - LIF Model: Stochastic resonance can also occur in the LIF model. The presence of noise can enhance the responsiveness of the neuron to weak input currents, allowing for improved detection and firing in the presence of low-amplitude signals.
+\\
+
+The impact of noise can vary depending on the specific parameters and properties of the models, as well as the nature and intensity of the noise sources. Additionally, the qualitative impact of noise in neuronal models is an active area of research, and different models may exhibit different behaviors and responses to noise.
+
+
+\section{Plots and Discussion}
+
+
+
+
+\\\\
+\begin{table}[htbp]
+\centering
+\begin{tabular}{r|c}
+\hline
+Wigner Eckart Application Relation & Clebsch Gordan Recursion Relation\\
+\hline
+j' & j\\
+j & $j_1$ \\
+k & $j_2$ \\
+m' & m \\
+m & $m_1$ \\
+q & $m_2$ \\
+\hline
+\end{tabular}
+\caption{Translation of Coefficients from W-E (Eq 6.8)to C-G coefficients (Eq 6.9) .\label{tab:i}}
+\end{table}
+
+
+\appendix
+\section{Acknowledgments}
+
+
+
+
+
+
+
+
+% Bibliography
+
+%% [A] Recommended: using JHEP.bst file
+%% \bibliographystyle{JHEP}
+%% \bibliography{biblio.bib}
+
+%% or
+%% [B] Manual formatting (see below)
+%% (i) We suggest to always provide author, title and journal data or doi:
+%% in short all the informations that clearly identify a document.
+%% (ii) please avoid comments such as "For a review'', "For some examples",
+%% "and references therein" or move them in the text. In general, please leave only references in the bibliography and move all
+%% accessory text in footnotes.
+%% (iii) Also, please have only one work for each \bibitem.
+
+\begin{thebibliography}{99}
+
+\bibitem{g}
+Hodgkin, A. L., & Huxley, A. F.,
+\emph{A quantitative description of membrane current and its application to conduction and excitation in nerve.},
+\emph{The Journal of Physiology} {\bf vol 1} (1952) pg. 500-544
+
+\bibitem{b}
+Gerstner, W., & Kistler, W. M. ,
+\emph{Spiking Neuron Models: Single Neurons, Populations, Plasticity},
+Cambridge University Press (2002).
+
+\bibitem{c}
+Steinmetz, P. N., Manwani, A., Koch, C., London, M., & Segev, I.
+\emph{. Subthreshold voltage noise due to channel fluctuations in active neuronal membranes. },
+The Journal of Computational Neuroscience. (2000).
+
+\bibitem{a}
+Izhikevich, E. M. .,
+\emph{Simple model of spiking neurons},
+\emph{IEEE Transactions on Neural Networks,s} {\bf 14(6), 1569-1572. doi: 10.1109/TNN.2003.820440} (2003) 
+
+\bibitem{d}
+Brette, R., & Gerstner, W.,
+\emph{ Adaptive exponential integrate-and-fire model as an effective description of neuronal activity},
+\emph{Journal of Neurophysiology, 94(5), 3637-3642.} . (2005)
+
+\end{thebibliography}
+\end{document}
