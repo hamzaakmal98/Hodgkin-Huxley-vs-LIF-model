@@ -5,6 +5,7 @@
 \usepackage{tensor}
 \usepackage{mathtools}
 \usepackage{physics}
+\usepackage{graphicx}
 \DeclarePairedDelimiter\bra{\langle}{\rvert}
 \DeclarePairedDelimiter\ket{\lvert}{\rangle}
 \DeclarePairedDelimiterX\braket[2]{\langle}{\rangle}{#1 \delimsize\vert #2}
@@ -356,30 +357,68 @@ The impact of noise can vary depending on the specific parameters and properties
 
 \section{Plots and Discussion}
 
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=16cm]{1.png}
+    \caption{Comparison of the membrane potential of HH model (left) and LIF model (right) for current = 0.01 $microampere/mm^2$ Note that there are repetitive spikes going upto 37 mV and dropping back to -74 mV for the Hodgkin Huxley model. For the LIF model, however, there are no spikes. The voltage keeps dropping to a minimum of -74 mV after which it begins to asymptotically drift to that value and stays at that voltage for a long time.}
+    \label{fig:1}
+\end{figure}
+\clearpage 
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=16cm]{2.png}
+    \caption{Comparison of the membrane potential of HH model (left) and LIF model (right) for current = 0.05 $microampere/mm^2$ Note that we get an identical graph as in Fig.1 for Hodgkin Huxley. For the LIF model, however, there are no spikes at all. Interesting!}
+    \label{fig:2}
+\end{figure}
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=16cm]{3.png}
+    \caption{Comparison of the membrane potential of HH model (left) and LIF model (right) for current = 2 $microampere/mm^2$ Note that there is one spike going upto 48 mV (higher than previously in Fig.1) and dropping back to -40 mV asymptotically for the Hodgkin Huxley model. For the LIF model, however, there are numerable spikes from -74 mV to -56 mV!}
+    \label{fig:3}
+\end{figure}
+\clearpage 
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=16cm]{4.png}
+    \caption{Comparisons of the Voltage, Current and Spiking Frequency against time for the Hodgkin Huxley model (Left) and LIF model (right). As we steadily increase the current, the amplitude of the spiking voltage keeps dwindling and sinuosidually normalizes to a mean value of -48 mV. The spiking frequency rises erratically from 0.1 to 0.175 kHz. For the LIF model, we see similar trends for the spiking frequency except that it rises to a much higher frequency of 0.5 kHz if we let the program run a bit. The voltage spikes are much more frequent and oscillate between -54 mV abd -78 mV. The trend does not seem quite apparent here though.}
+    \label{fig:4}
+\end{figure}
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=16cm]{5.png}
+    \caption{Here is a similar comparison between the HH model (left) and LIF model (right) for frequency against current. We see that this appropriates the predictive behavior since dI/dt is constant for injected current and we expect the same graphs.}
+    \label{fig:5}
+\end{figure}
+\clearpage 
 
 
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=16cm]{6.png}
+    \caption{Comparison of the membrane potential against current of HH model (left) and LIF model (right) and for the evolution of the parameters m, n and h. For the HH model without inhibition, we get a continuos trend of spikes as seen earlier. With inhibition, it takes time for the membrane potential to start spiking (100ms) after which we see the same pattern emerge. For the LIF model, there is a 100ms delay between spikes for m, n and h. Before the delay, m is at 0.1mV and spikes immediately. n starts at 0.3mV and spikes with less amplitude once. h starts at 0.6mV and drops to 0.1mV before returning to 0.5 mV. After the 100ms delay, they frequent the same oscillatory behavior and sustain.}
+    \label{fig:6}
+\end{figure}
 
-\\\\
-\begin{table}[htbp]
-\centering
-\begin{tabular}{r|c}
-\hline
-Wigner Eckart Application Relation & Clebsch Gordan Recursion Relation\\
-\hline
-j' & j\\
-j & $j_1$ \\
-k & $j_2$ \\
-m' & m \\
-m & $m_1$ \\
-q & $m_2$ \\
-\hline
-\end{tabular}
-\caption{Translation of Coefficients from W-E (Eq 6.8)to C-G coefficients (Eq 6.9) .\label{tab:i}}
-\end{table}
-
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=16cm]{last.png}
+    \caption{Comparison of the spiking behavior of HH (Left) and LIF (Right) under increasing current with different forms of unfiltered noisy clutter. We see that it is difficult to decipher the graph and work with the unfiltered data. A filtering algorithm must be applied to the data to make sense of the standardization results to make an educated accounting of the neuronal behavior.}
+    \label{fig:last}
+\end{figure}
+\clearpage 
 
 \appendix
 \section{Acknowledgments}
+
+I was assisted by Huzaifah Arshad (23100284) for the plots generation and I would like to thank him for the help! Please grant him maximum extra credit.
+
+
+
+
 
 
 
@@ -423,7 +462,7 @@ The Journal of Computational Neuroscience. (2000).
 \bibitem{a}
 Izhikevich, E. M. .,
 \emph{Simple model of spiking neurons},
-\emph{IEEE Transactions on Neural Networks,s} {\bf 14(6), 1569-1572. doi: 10.1109/TNN.2003.820440} (2003) 
+\emph{IEEE Transactions on Neural Networks,s} {\bf 14(6), 1569-1572. doi: 10.1109/TNN.2003.820440} (2003)
 
 \bibitem{d}
 Brette, R., & Gerstner, W.,
@@ -431,4 +470,7 @@ Brette, R., & Gerstner, W.,
 \emph{Journal of Neurophysiology, 94(5), 3637-3642.} . (2005)
 
 \end{thebibliography}
+
+
+
 \end{document}
