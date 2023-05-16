@@ -5,6 +5,7 @@
 \usepackage{tensor}
 \usepackage{mathtools}
 \usepackage{physics}
+\usepackage{hyperref}
 \usepackage{graphicx}
 \DeclarePairedDelimiter\bra{\langle}{\rvert}
 \DeclarePairedDelimiter\ket{\lvert}{\rangle}
@@ -399,7 +400,7 @@ The impact of noise can vary depending on the specific parameters and properties
 \begin{figure}[htp]
     \centering
     \includegraphics[width=16cm]{6.png}
-    \caption{Comparison of the membrane potential against current of HH model (left) and LIF model (right) and for the evolution of the parameters m, n and h. For the HH model without inhibition, we get a continuos trend of spikes as seen earlier. With inhibition, it takes time for the membrane potential to start spiking (100ms) after which we see the same pattern emerge. For the LIF model, there is a 100ms delay between spikes for m, n and h. Before the delay, m is at 0.1mV and spikes immediately. n starts at 0.3mV and spikes with less amplitude once. h starts at 0.6mV and drops to 0.1mV before returning to 0.5 mV. After the 100ms delay, they frequent the same oscillatory behavior and sustain.}
+    \caption{(Refer to Appendix A.1 for parameter details) Here is a comparison of the membrane potential against current of HH model (left) and LIF model (right) and for the evolution of the parameters m, n and h. For the HH model without inhibition, we get a continuos trend of spikes as seen earlier. With inhibition, it takes time for the membrane potential to start spiking (100ms) after which we see the same pattern emerge. For the LIF model, there is a 100ms delay between spikes for m, n and h. Before the delay, m is at 0.1mV and spikes immediately. n starts at 0.3mV and spikes with less amplitude once. h starts at 0.6mV and drops to 0.1mV before returning to 0.5 mV. After the 100ms delay, they frequent the same oscillatory behavior and sustain.}
     \label{fig:6}
 \end{figure}
 
@@ -414,18 +415,51 @@ The impact of noise can vary depending on the specific parameters and properties
 \appendix
 \section{Acknowledgments}
 
-I was assisted by Huzaifah Arshad (23100284) for the plots generation and I would like to thank him for the help! Please grant him maximum extra credit.
+    I was assisted by Huzaifah Arshad (23100284) for the plots generation and I would like to thank him for the help! Please grant him maximum extra credit.\\
 
+Here is a Github link to the code for extra credit:\\
 
+\href{https://github.com/hamzaakmal98/Hodgkin-Huxley-vs-LIF-model.git}{HH Model vs LIF model}
 
+\subsection{m, n and h parameters}
 
+In the Hodgkin-Huxley (HH) model:
+\\
+The HH model describes the dynamics of voltage-gated ion channels in the membrane of a neuron. It consists of several differential equations that capture the behavior of sodium (Na+), potassium (K+), and leakage (L) currents.
+\\
 
+In the HH model, the variables m, n, and h represent the activation and inactivation gating variables for the sodium and potassium channels:
+\\
 
+    m: Activation gating variable for sodium channels.
+        m represents the probability that the sodium channels are open and available for conducting current.
+        It is voltage-dependent and increases with depolarization of the membrane potential.
+        m is governed by a differential equation that describes its time course.
+\\
 
+    n: Activation gating variable for potassium channels.
+        n represents the probability that the potassium channels are open and available for conducting current.
+        It is also voltage-dependent but has a slower time course compared to m.
+        n is governed by a differential equation that describes its dynamics.
+\\
 
+    h: Inactivation gating variable for sodium channels.
+        h represents the probability that the sodium channels are inactivated and unable to conduct current.
+        It is voltage-dependent and decreases with depolarization of the membrane potential.
+        h is also governed by a differential equation that describes its time course.
+\\
 
+The values of m, n, and h range between 0 and 1, representing the proportion of open or inactivated channels. These gating variables determine the conductance of the ion channels and play a crucial role in shaping the membrane potential dynamics and the generation of action potentials in the HH model.
+\\
 
+In the Leaky Integrate-and-Fire (LIF) model:
+\\
 
+The LIF model is a simplified neuron model that captures the essential behavior of neuronal firing. It consists of a simple leaky integration of the membrane potential and a threshold mechanism for spike generation.
+\\
+
+In the LIF model, the parameters m, n, and h are not typically used since the model does not explicitly incorporate voltage-gated ion channels or detailed gating dynamics. Instead, the LIF model focuses on the membrane potential dynamics governed by a differential equation and a threshold condition for spike initiation.
+\\
 
 % Bibliography
 
